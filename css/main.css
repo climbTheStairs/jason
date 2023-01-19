@@ -1,0 +1,38 @@
+* {
+	background: initial;
+	border: initial;
+	box-sizing: border-box;
+	margin: initial;
+	padding: initial;
+}
+#json-viewer {
+	background: #111;
+	color: #eee;
+	font-family: monospace;
+	overflow-wrap: break-word;
+	padding: 15px 20px;
+}
+#json-viewer ul,
+#json-viewer ol {
+	list-style-type: none;
+	margin-left: 40px;
+}
+#json-viewer details:not([open]) {
+	display: inline;
+}
+#json-viewer details > summary {
+	list-style-position: outside;
+}
+/* Uncomment for old style
+#json-viewer details > summary {
+	list-style-type: none;
+}
+#json-viewer details > summary::after {
+	content: "+";
+	color: green;
+}
+#json-viewer details[open] > summary::after {
+	content: "-";
+	color: red;
+}
+*/
