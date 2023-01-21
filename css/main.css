@@ -20,13 +20,15 @@
 #json-viewer details:not([open]) {
 	display: inline;
 }
+#json-viewer details.str {
+	display: revert;
+}
+#json-viewer details.str > * {
+	float: left;
+}
 #json-viewer details > summary {
 	list-style-position: outside;
 }
 #json-viewer details:not([open]) > summary::after {
-	/* `margin` must be used
-	/* instead of whitespace in `content`
-	/* because they will break. */
 	content: "...";
-	margin-inline: 5px;
 }
