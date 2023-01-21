@@ -35,7 +35,7 @@ def json2html(k, v, omit_key):
     k = escape_html(json.dumps(k)) + ": "
     if omit_key:
         k = ""
-    if v and type(v) in TYPES:
+    if v and type(v) in TYPES and (type(v) != str or len(v) >= 80):
         class_name, lbrace, rbrace, v2html = TYPES[type(v)]
         return (
             "<details class=\"%s\" open=\"open\">" % (class_name) +

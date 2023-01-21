@@ -21,7 +21,8 @@ const json2html = (k, v, omitKey) => {
 	k = escapeHtml(JSON.stringify(k)) + ": "
 	if (omitKey)
 		k = ""
-	if (v && type(v) in TYPES && Object.keys(v).length) {
+	if (v && type(v) in TYPES && Object.keys(v).length &&
+		(type(v) !== "string" || v.length >= 80)) {
 		const [className, lbrace, rbrace, v2html] = TYPES[type(v)]
 		return `<details class="${className}" open="open">` +
 			`<summary>${k}${lbrace}</summary>` +
