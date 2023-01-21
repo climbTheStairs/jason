@@ -15,18 +15,12 @@ def to_jason(k, v, omit_key):
     k = escape_html(json.dumps(k)) + ": "
     if omit_key:
         k = ""
-    if v and type(v) in (dict, list):
-        is_arr = type(v) == list
-        lbrace = "[" if is_arr else "{"
-        rbrace = "]" if is_arr else "}"
-        if is_arr:
-            v = list2html(v)
-        else:
-            v = dict2html(v)
+    if v and type(v) in TYPES:
+        lbrace, rbrace, v2html = TYPES[type(v)]
         return (
             "<details open=\"open\">" +
             "<summary>%s%s</summary>" % (k, lbrace) +
-            v +
+            v2html(v) +
             "</details>%s" % (rbrace))
     return k + escape_html(json.dumps(v))
 
@@ -59,6 +53,11 @@ def list2html(v):
         "<ol><li>" +
         ",</li><li>".join(to_jason("", v, True) for v in v) +
         "</li></ol>")
+
+TYPES = {
+    dict: ("{", "}", dict2html),
+    list: ("[", "]", list2html),
+}
 
 if __name__ == "__main__":
     main()

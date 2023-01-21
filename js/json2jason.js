@@ -1,21 +1,17 @@
 ;(() => {
 "use strict"
 
+const type = (v) => Object.getPrototypeOf(v).constructor.name
+
 const toJason = (k, v, omitKey) => {
 	k = escapeHtml(JSON.stringify(k)) + ": "
 	if (omitKey)
 		k = ""
-	if (v && typeof v === "object" && Object.entries(v).length) {
-		const isArr = Array.isArray(v)
-		const lbrace = isArr ? "[" : "{"
-		const rbrace = isArr ? "]" : "}"
-		if (isArr)
-			v = arr2html(v)
-		else
-			v = obj2html(v)
+	if (v && type(v) in TYPES && Object.keys(v).length) {
+		const [lbrace, rbrace, v2html] = TYPES[type(v)]
 		return `<details open="open">` +
 			`<summary>${k}${lbrace}</summary>` +
-			v +
+			v2html(v) +
 			`</details>${rbrace}`
 	}
 	return k + escapeHtml(JSON.stringify(v))
@@ -38,5 +34,10 @@ const arr2html = (v) => {
 	return `<ol><li>` + v.map(v => {
 		return toJason("", v, true)
 	}).join(`,</li><li>`) + `</li></ol>`
+}
+
+const TYPES = {
+	Object: [`{`, `}`, obj2html],
+	Array:  [`[`, `]`, arr2html],
 }
 })();
