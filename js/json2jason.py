@@ -3,11 +3,11 @@ from os import sys
 
 def main():
     d = json.load(sys.stdin)
-    sys.stdout.write(to_jason("", d, True))
+    sys.stdout.write(json2html("", d, True))
 
-def to_jason(k, v, omit_key):
+def json2html(k, v, omit_key):
     """
-    to_jason takes a key k and value v and returns an HTML node,
+    json2html takes a key k and value v and returns an HTML node,
     omitting the key from the output if omit_key is True.
     """
     assert type(k) == str
@@ -41,7 +41,7 @@ def dict2html(v):
     assert type(v) == dict
     return (
         "<ul><li>" +
-        ",</li><li>".join(to_jason(k, v, False) for k, v in v.items()) +
+        ",</li><li>".join(json2html(k, v, False) for k, v in v.items()) +
         "</li></ul>")
 
 def list2html(v):
@@ -51,7 +51,7 @@ def list2html(v):
     assert type(v) == list
     return (
         "<ol><li>" +
-        ",</li><li>".join(to_jason("", v, True) for v in v) +
+        ",</li><li>".join(json2html("", v, True) for v in v) +
         "</li></ol>")
 
 TYPES = {
