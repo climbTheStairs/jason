@@ -6,7 +6,7 @@ def main():
     sys.stdout.write(to_jason("", d, True))
 
 def to_jason(k, v, omit_key):
-    k = json.dumps(k) + ": "
+    k = escape_html(json.dumps(k)) + ": "
     if omit_key:
         k = ""
     if v and type(v) in (dict, list):
@@ -27,7 +27,14 @@ def to_jason(k, v, omit_key):
             "</li>" +
             "</%s>" % (list_tag) +
             "</details>%s" % (rbrace))
-    return ((k + json.dumps(v))
+    return k + escape_html(json.dumps(v))
+
+def escape_html(s):
+    """
+    escape_html escapes HTML special characters in s and returns it.
+    """
+    assert type(s) == str
+    return (s
         .replace("&", "&amp;")
         .replace("<", "&lt;")
         .replace(">", "&gt;"))

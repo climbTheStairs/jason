@@ -1,6 +1,8 @@
+;(() => {
 "use strict"
+
 const toJason = (k, v, omitKey) => {
-	k = JSON.stringify(k) + ": "
+	k = escapeHtml(JSON.stringify(k)) + ": "
 	if (omitKey)
 		k = ""
 	if (typeof v === "object" && v && Object.entries(v).length) {
@@ -19,8 +21,13 @@ const toJason = (k, v, omitKey) => {
 			`</${listTag}>` +
 			`</details>${rbrace}`
 	}
-	return (k + JSON.stringify(v))
+	return k + escapeHtml(JSON.stringify(v))
+}
+
+const escapeHtml = (s) => {
+	return s
 		.replaceAll("&", "&amp;")
 		.replaceAll("<", "&lt;")
 		.replaceAll(">", "&gt;")
 }
+})();
