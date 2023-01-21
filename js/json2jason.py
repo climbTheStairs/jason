@@ -3,7 +3,27 @@ from os import sys
 
 def main():
     d = json.load(sys.stdin)
-    sys.stdout.write(json2html("", d, True))
+    sys.stdout.write(json2htmldoc(d))
+
+def json2htmldoc(d):
+    """
+    json2htmldoc converts an object representing JSON data
+    to an HTML document.
+    """
+    return ("""\
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>jason - JSON viewer</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<section id="json-viewer">""" + json2html("", d, True) + """\
+</section>
+</body>
+</html>
+""")
 
 def json2html(k, v, omit_key):
     """

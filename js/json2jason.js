@@ -3,6 +3,20 @@
 
 const type = (v) => Object.getPrototypeOf(v).constructor.name
 
+const json2htmldoc = (d) => {
+	return `<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>jason - JSON viewer</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<section id="json-viewer">` + json2html("", d, true) + `</section>
+</body>
+</html>`
+}
+
 const json2html = (k, v, omitKey) => {
 	k = escapeHtml(JSON.stringify(k)) + ": "
 	if (omitKey)
@@ -40,4 +54,5 @@ const TYPES = {
 	Object: [`{`, `}`, obj2html],
 	Array:  [`[`, `]`, arr2html],
 }
+
 })();
