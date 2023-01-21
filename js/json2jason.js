@@ -50,9 +50,14 @@ const arr2html = (v) => {
 	}).join(`,</li><li>`) + `</li></ol>`
 }
 
+const str2html = (v) => {
+	return "<div>" + escapeHtml(JSON.stringify(v)).slice(1, -1) + "</div>"
+}
+
 const TYPES = {
 	Object: [`{`, `}`, obj2html],
 	Array:  [`[`, `]`, arr2html],
+	String: [`"`, `"`, str2html],
 }
 
 })();

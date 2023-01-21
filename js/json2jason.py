@@ -74,9 +74,17 @@ def list2html(v):
         ",</li><li>".join(json2html("", v, True) for v in v) +
         "</li></ol>")
 
+def str2html(v):
+    """
+    str2html converts str v to an HTML element and returns it.
+    """
+    assert type(v) == str
+    return "<div>" + escape_html(json.dumps(v))[1:-1] + "</div>"
+
 TYPES = {
     dict: ("{", "}", dict2html),
     list: ("[", "]", list2html),
+    str: ("\"", "\"", str2html),
 }
 
 if __name__ == "__main__":
