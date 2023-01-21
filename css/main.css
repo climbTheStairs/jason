@@ -20,7 +20,6 @@
 #json-viewer details:not([open]) {
 	display: inline;
 }
-/* New style: */
 #json-viewer details > summary {
 	list-style-position: outside;
 }
@@ -31,21 +30,3 @@
 	content: "...";
 	margin-inline: 5px;
 }
-/**/
-/* Old style: *
-#json-viewer details > summary {
-	list-style-type: none;
-}
-#json-viewer details > summary::after {
-	/* `margin` must be used
-	/* instead of whitespace in `content`
-	/* because they will break. *
-	content: "+";
-	color: green;
-	margin-inline: 5px;
-}
-#json-viewer details[open] > summary::after {
-	content: "-";
-	color: red;
-}
-/**/
