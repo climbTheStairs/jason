@@ -5,20 +5,17 @@ const toJason = (k, v, omitKey) => {
 	k = escapeHtml(JSON.stringify(k)) + ": "
 	if (omitKey)
 		k = ""
-	if (typeof v === "object" && v && Object.entries(v).length) {
+	if (v && typeof v === "object" && Object.entries(v).length) {
 		const isArr = Array.isArray(v)
 		const lbrace = isArr ? "[" : "{"
 		const rbrace = isArr ? "]" : "}"
-		const listTag = isArr ? "ol" : "ul"
+		if (isArr)
+			v = arr2html(v)
+		else
+			v = obj2html(v)
 		return `<details open="open">` +
 			`<summary>${k}${lbrace}</summary>` +
-			`<${listTag}>` +
-			`<li>` +
-			Object.entries(v)
-				.map(([k, v]) => toJason(k, v, isArr))
-				.join(`,</li><li>`) +
-			`</li>` +
-			`</${listTag}>` +
+			v +
 			`</details>${rbrace}`
 	}
 	return k + escapeHtml(JSON.stringify(v))
@@ -29,5 +26,17 @@ const escapeHtml = (s) => {
 		.replaceAll("&", "&amp;")
 		.replaceAll("<", "&lt;")
 		.replaceAll(">", "&gt;")
+}
+
+const obj2html = (v) => {
+	return `<ul><li>` + Object.entries(v).map(([k, v]) => {
+		return toJason(k, v, false)
+	}).join(`,</li><li>`) + `</li></ul>`
+}
+
+const arr2html = (v) => {
+	return `<ol><li>` + v.map(v => {
+		return toJason("", v, true)
+	}).join(`,</li><li>`) + `</li></ol>`
 }
 })();

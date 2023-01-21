@@ -6,6 +6,12 @@ def main():
     sys.stdout.write(to_jason("", d, True))
 
 def to_jason(k, v, omit_key):
+    """
+    to_jason takes a key k and value v and returns an HTML node,
+    omitting the key from the output if omit_key is True.
+    """
+    assert type(k) == str
+    assert type(omit_key) == bool
     k = escape_html(json.dumps(k)) + ": "
     if omit_key:
         k = ""
@@ -13,19 +19,14 @@ def to_jason(k, v, omit_key):
         is_arr = type(v) == list
         lbrace = "[" if is_arr else "{"
         rbrace = "]" if is_arr else "}"
-        list_tag = "ol" if is_arr else "ul"
         if is_arr:
-            v = enumerate(v)
+            v = list2html(v)
         else:
-            v = v.items()
+            v = dict2html(v)
         return (
             "<details open=\"open\">" +
             "<summary>%s%s</summary>" % (k, lbrace) +
-            "<%s>" % (list_tag) +
-            "<li>" +
-            ",</li><li>".join(to_jason(k, v, is_arr) for k, v in v) +
-            "</li>" +
-            "</%s>" % (list_tag) +
+            v +
             "</details>%s" % (rbrace))
     return k + escape_html(json.dumps(v))
 
@@ -38,6 +39,26 @@ def escape_html(s):
         .replace("&", "&amp;")
         .replace("<", "&lt;")
         .replace(">", "&gt;"))
+
+def dict2html(v):
+    """
+    dict2html converts dict v to an HTML element and returns it.
+    """
+    assert type(v) == dict
+    return (
+        "<ul><li>" +
+        ",</li><li>".join(to_jason(k, v, False) for k, v in v.items()) +
+        "</li></ul>")
+
+def list2html(v):
+    """
+    list2html converts list v to an HTML element and returns it.
+    """
+    assert type(v) == list
+    return (
+        "<ol><li>" +
+        ",</li><li>".join(to_jason("", v, True) for v in v) +
+        "</li></ol>")
 
 if __name__ == "__main__":
     main()
