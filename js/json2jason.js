@@ -22,8 +22,8 @@ const json2html = (k, v, omitKey) => {
 	if (omitKey)
 		k = ""
 	if (v && type(v) in TYPES && Object.keys(v).length) {
-		const [lbrace, rbrace, v2html] = TYPES[type(v)]
-		return `<details open="open">` +
+		const [className, lbrace, rbrace, v2html] = TYPES[type(v)]
+		return `<details class="${className}" open="open">` +
 			`<summary>${k}${lbrace}</summary>` +
 			v2html(v) +
 			`</details>${rbrace}`
@@ -55,9 +55,9 @@ const str2html = (v) => {
 }
 
 const TYPES = {
-	Object: [`{`, `}`, obj2html],
-	Array:  [`[`, `]`, arr2html],
-	String: [`"`, `"`, str2html],
+	Object: ["obj", `{`, `}`, obj2html],
+	Array:  ["arr", `[`, `]`, arr2html],
+	String: ["str", `"`, `"`, str2html],
 }
 
 })();

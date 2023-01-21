@@ -36,9 +36,9 @@ def json2html(k, v, omit_key):
     if omit_key:
         k = ""
     if v and type(v) in TYPES:
-        lbrace, rbrace, v2html = TYPES[type(v)]
+        class_name, lbrace, rbrace, v2html = TYPES[type(v)]
         return (
-            "<details open=\"open\">" +
+            "<details class=\"%s\" open=\"open\">" % (class_name) +
             "<summary>%s%s</summary>" % (k, lbrace) +
             v2html(v) +
             "</details>%s" % (rbrace))
@@ -82,9 +82,9 @@ def str2html(v):
     return "<div>" + escape_html(json.dumps(v))[1:-1] + "</div>"
 
 TYPES = {
-    dict: ("{", "}", dict2html),
-    list: ("[", "]", list2html),
-    str: ("\"", "\"", str2html),
+    dict: ("obj", "{", "}", dict2html),
+    list: ("arr", "[", "]", list2html),
+    str: ("str", "\"", "\"", str2html),
 }
 
 if __name__ == "__main__":
