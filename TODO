@@ -1,1 +1,2 @@
 - Fix inconsistent output when JSON contains Chinese characters
+- Fix collapsible strings not displaying properly when the text wraps
