@@ -34,7 +34,7 @@ def json2html(k, v, omit_key):
     """
     assert type(k) == str
     assert type(omit_key) == bool
-    k = escape_html(json.dumps(k)) + ": "
+    k = to_escaped_html(k) + ": "
     if omit_key:
         k = ""
     if v and type(v) in TYPES and (type(v) != str or len(v) >= 80):
@@ -44,7 +44,14 @@ def json2html(k, v, omit_key):
             "<summary>%s%s</summary>" % (k, lbrace) +
             v2html(v) +
             "</details>%s" % (rbrace))
-    return k + escape_html(json.dumps(v))
+    return k + to_escaped_html(v)
+
+def to_escaped_html(v):
+    """
+    to_escaped_html converts a value v to json
+    then calls escape_html on it and returns it.
+    """
+    return escape_html(json.dumps(v, ensure_ascii=False))
 
 def escape_html(s):
     """
@@ -81,7 +88,7 @@ def str2html(v):
     str2html converts str v to an HTML element and returns it.
     """
     assert type(v) == str
-    return "<div>" + escape_html(json.dumps(v))[1:-1] + "</div>"
+    return "<div>" + to_escaped_html(v)[1:-1] + "</div>"
 
 TYPES = {
     dict: ("obj", "{", "}", dict2html),
